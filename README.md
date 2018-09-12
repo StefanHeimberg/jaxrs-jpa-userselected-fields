@@ -1,0 +1,1 @@
+# jaxrs-jpa-userselected-fields
