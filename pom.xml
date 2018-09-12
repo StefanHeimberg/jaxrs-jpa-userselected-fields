@@ -1,0 +1,228 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>com.example.myproject</groupId>
+    <artifactId>myproject-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    
+    <modules>
+        <module>myproject-service</module>
+        <module>myproject-systemtests</module>
+    </modules>
+    
+    <properties>
+        <!-- Default Maven User Properties -->
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <skipTests>false</skipTests>
+        <skipITs>${skipTests}</skipITs>
+        
+        <!-- Platform Versionen -->
+        <!-- https://docs.payara.fish/release-notes/release-notes-183.html -->
+        <payara.version>5.183</payara.version>
+        <payara.persistence.version>2.2</payara.persistence.version>
+        <payara.validation.version>2.0.1.Final</payara.validation.version>
+        <payara.microprofile-api.version>2.0.1</payara.microprofile-api.version>
+        <payara.minimum-jdk.version>1.8.0-162</payara.minimum-jdk.version>
+        <parara.eclipselink.version>2.7.3</parara.eclipselink.version>
+        
+        <!-- Project Properties -->
+        <myproject-service.image.name>myproject-service:${project.version}</myproject-service.image.name>
+        
+        <!-- Mehrfachverwendete Dependency Versionen -->
+        <junit.version>5.3.0</junit.version>
+        <jersey.version>2.27</jersey.version>
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <!-- ========================================================== -->
+            <!-- Platform dependencies -->
+            <!-- ========================================================== -->
+            
+            <dependency>
+                <groupId>org.eclipse.microprofile</groupId>
+                <artifactId>microprofile</artifactId>
+                <version>${payara.microprofile-api.version}</version>
+                <type>pom</type>
+            </dependency>
+            
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${payara.persistence.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+                <version>${parara.eclipselink.version}</version>
+            </dependency>
+            
+            <!-- ========================================================== -->
+            <!-- Database dependencies -->
+            <!-- ========================================================== -->
+            
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>5.1.4</version>
+            </dependency>
+            
+            <!-- ========================================================== -->
+            <!-- Testing dependencies -->
+            <!-- ========================================================== -->
+        
+            <!-- https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven-engines-configure -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            
+            <dependency>
+                <!-- Hinzugefügt weil es zur IllegalStateException: InjectionManagerFactory not found. kam. -->
+                <!-- https://stackoverflow.com/a/51217530/4429292 -->
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.9.6</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <version>1.1.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.0</version>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M2</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>3.5</version>
+                                    </requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>${payara.minimum-jdk.version}</version>
+                                    </requireJavaVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.26.1</version>
+                    <configuration>
+                        <apiVersion>1.38</apiVersion>
+                        <verbose>true</verbose>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
+</project>
