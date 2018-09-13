@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public final class AssertionsHelper {
 
+    public static void assertEqualsStatus(final Response.Status expectedStatus, final Response response) {
+        assertEquals(expectedStatus.getStatusCode(), response.getStatus());
+    }
+
     public static void assertEqualsStatusMediaType(final Response.Status expectedStatus, final MediaType expectedMediaType, final Response response) {
         assertEquals(expectedStatus.getStatusCode(), response.getStatus());
         assertEquals(expectedMediaType, response.getMediaType());
