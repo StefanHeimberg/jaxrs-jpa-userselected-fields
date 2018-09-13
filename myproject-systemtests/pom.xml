@@ -58,7 +58,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemProperties>
-                        <konto-service.location>http://${st.service.host}:${st.service.http.port}</konto-service.location>
+                        <myproject-service.location>http://${st.service.host}:${st.service.http.port}</myproject-service.location>
                     </systemProperties>
                 </configuration>
             </plugin>

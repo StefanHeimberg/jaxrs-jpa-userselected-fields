@@ -1,2 +1,4 @@
 /myproject-service/target/
+/myproject-service/nb-configuration.xml
 /myproject-systemtests/target/
+/myproject-systemtests/nb-configuration.xml
